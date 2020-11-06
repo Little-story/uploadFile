@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,8 +31,11 @@ public class AliyunOss {
             return result;
         }
 
+        if(StringUtils.isEmpty(fileName)) {
+            fileName=file.getOriginalFilename();
+        }
         Map<String, String> map = new HashMap<>(2);
-        map.put("url", aliyunOssService.uploadFile(file.getName(),"",file.getInputStream() ));
+        map.put("url", aliyunOssService.uploadFile(fileName,"",file.getInputStream() ));
         map.put("extData", extData);
 
         result.put("code", 0);

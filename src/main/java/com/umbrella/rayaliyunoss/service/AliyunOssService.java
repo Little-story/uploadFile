@@ -117,10 +117,6 @@ public class AliyunOssService {
      */
     private String coreUpload(String fileName, String filePath, InputStream inputStream) {
         log.info("Start to upload file....");
-        if(StringUtils.isEmpty(fileName) || inputStream == null) {
-            log.error("Filename Or inputStream is lack when upload file.");
-            return null;
-        }
         if(StringUtils.isEmpty(filePath)) {
             log.warn("File path is lack when upload file but we automatically generated");
             String dateCategory = DateUtil.getFormatDate(new Date(), "yyyyMMdd");
@@ -198,14 +194,14 @@ public class AliyunOssService {
      * 列出buckets下的所有文件
      * @Author: Captain&D
      * @cnblogs: https://www.cnblogs.com/captainad
-     * @param ossClient
      */
-    private void listObjects(OSSClient ossClient) {
-        System.out.println("Listing objects");
+    private void listObjects() {
+        OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
         ObjectListing objectListing = ossClient.listObjects(bucketName);
         for (OSSObjectSummary objectSummary : objectListing.getObjectSummaries()) {
             System.out.println(" - " + objectSummary.getKey() + "  " +
-                    "(size = " + objectSummary.getSize() + ")");
+                    "(size = " + objectSummary.getSize() + ")"+"\t"+objectSummary.getLastModified().toLocaleString());
+
         }
         System.out.println();
     }
